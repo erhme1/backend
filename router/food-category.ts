@@ -1,17 +1,17 @@
 import { Request, Response, Router } from "express";
-import { foodCategoryModel } from "../models/food-category";
+import { FoodCategoryModel } from "../models/food-category";
 
 export const foodCategoryRouter = Router();
 
 foodCategoryRouter.get("/", async (req, res) => {
-    const items = await foodCategoryModel.find();
+    const items = await FoodCategoryModel.find();
     res.json(items);
 });
 
-foodCategoryRouter.post("/", async (req: Request, res: Response) => {
-    const newItem = await foodCategoryModel.create({
-        categoryName: req.body.categoryName
-    });
+foodCategoryRouter.post("", async (req: Request, res: Response) => {
+    const {body} = req;
+    console.log(body);
+    const newItem = await FoodCategoryModel.create({...body});
 
     res.json({
         message: "New category added",
@@ -21,12 +21,12 @@ foodCategoryRouter.post("/", async (req: Request, res: Response) => {
 
 foodCategoryRouter.get('/:id', async (req: Request, res: Response) => {
     const id = req.params.id;
-    const item = await foodCategoryModel.findById(id);
+    const item = await FoodCategoryModel.findById(id);
     res.json(item);
 })
 
 foodCategoryRouter.put(":id", async (req: Request, res: Response) => {
-    const updatedItem = await foodCategoryModel.findByIdAndUpdate(
+    const updatedItem = await FoodCategoryModel.findByIdAndUpdate(
         req.params.id,
         { categoryName: req.body.categoryName },
         { new: true }
@@ -35,6 +35,6 @@ foodCategoryRouter.put(":id", async (req: Request, res: Response) => {
 });
 
 foodCategoryRouter.delete("/:id", async (req: Request, res: Response) => {
-    const deletedItem = await foodCategoryModel.findByIdAndDelete(req.params.id);
+    const deletedItem = await FoodCategoryModel.findByIdAndDelete(req.params.id);
     res.json(deletedItem);
 });

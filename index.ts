@@ -1,10 +1,11 @@
 import express, { Request, Response } from "express";
 import { config, configDotenv } from "dotenv";
 import { foodCategoryRouter } from "./router/food-category";
-import { foodRouter } from "./router/food";
+import { FoodRouter } from "./router/food";
+
 const cors = require('cors');
  
-const PORT = 1000;
+const PORT = 8000;
 const app = express();
 const mongoose = require('mongoose');
 app.use(cors());
@@ -18,18 +19,10 @@ const connectMongoDB = async () => {
     await mongoose.connect(URI);
 }
 connectMongoDB();
-// const FOOD_CATEGORY_SCHEMA = new mongoose.Schema(
-//     {categoryName: String,},
-//     {timestamps: true}
-// );
-// const foodCategoryModel = mongoose.model(
-//     "FoodCategory",
-//     FOOD_CATEGORY_SCHEMA,
-//     "food-category"
-// )
+
  
 app.use("/food-category/", foodCategoryRouter);
-app.use('/food/', foodRouter);
+app.use('/food/', FoodRouter);
 app.use('/order/', foodCategoryRouter);
 
 app.listen(PORT, () => {
